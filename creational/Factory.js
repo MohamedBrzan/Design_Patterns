@@ -1,46 +1,52 @@
-//* superclass
+// Superclass
 class Animal {
   constructor(name) {
     this.name = name;
-    this.sayName = () => console.log(`my name is ${this.name}`);
+    this.sayName = function () {
+      console.log('My name is ' + this.name);
+    };
   }
 }
 
-//* subclass
+// Subclass
 class Dog extends Animal {
   constructor(name) {
     super(name);
-  }
-
-  voice() {
-    return 'HAAAOOOW';
+    this.bark = function () {
+      console.log('Woof, woof!');
+    };
   }
 }
 
-//* subclass
+// Subclass
 class Cat extends Animal {
   constructor(name) {
     super(name);
-  }
-  voice() {
-    return 'MeAAwww';
-  }
-}
-
-class AnimalFactory {
-  createAnimal(name, type) {
-    switch (type) {
-      case 'dog':
-        return new Dog(name);
-      case 'cat':
-        return new Cat(name);
-      default:
-        throw new Error('Invalid animal type');
-    }
+    this.meow = function () {
+      console.log('Meow, meow!');
+    };
   }
 }
 
-let dog = new AnimalFactory().createAnimal('pepo', 'dog');
+// Factory
+function AnimalFactory() {}
 
-console.log(dog.sayName());
-console.log(dog.voice());
+AnimalFactory.createAnimal = function (name, type) {
+  switch (type) {
+    case 'dog':
+      return new Dog(name);
+    case 'cat':
+      return new Cat(name);
+    default:
+      throw new Error('Invalid animal type');
+  }
+};
+
+// Usage
+var dog = AnimalFactory.createAnimal('Freya', 'dog');
+dog.sayName(); // My name is Freya
+dog.bark(); // Woof, woof!
+
+var cat = AnimalFactory.createAnimal('Lily', 'cat');
+cat.sayName(); // My name is Lily
+cat.meow(); // Meow, meow!
