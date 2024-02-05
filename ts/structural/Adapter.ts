@@ -1,33 +1,36 @@
-class OldCalculator {
-  operations: (term1: any, term2: any, operation: any) => any;
-  constructor() {
-    this.operations = function (term1, term2, operation) {
-      switch (operation) {
-        case 'add':
-          return term1 + term2;
-        case 'sub':
-          return term1 - term2;
-        default:
-          return NaN;
-      }
-    };
-  }
+interface OldCalc {
+  operations: (term1: number, term2: number, operation: string) => number;
 }
 
-class NewCalculator {
-  add: (term1: any, term2: any) => any;
-  sub: (term1: any, term2: any) => number;
-  constructor() {
-    this.add = function (term1, term2) {
-      return term1 + term2;
-    };
-    this.sub = function (term1, term2) {
-      return term1 - term2;
-    };
-  }
+interface NewCalc {
+  add: (term1: number, term2: number) => number;
+  sub: (term1: number, term2: number) => number;
 }
+
+class OldCalculator implements OldCalc {
+  operations = function (term1: number, term2: number, operation: string) {
+    switch (operation) {
+      case 'add':
+        return term1 + term2;
+      case 'sub':
+        return term1 - term2;
+      default:
+        return NaN;
+    }
+  };
+}
+
+class NewCalculator implements NewCalc {
+  add = function (term1: number, term2: number) {
+    return term1 + term2;
+  };
+  sub = function (term1: number, term2: number) {
+    return term1 - term2;
+  };
+}
+
 class CalculatorAdapter {
-  operations: (term1: any, term2: any, operation: any) => any;
+  operations: (term1: number, term2: number, operation: string) => number;
   constructor() {
     const newCalculator = new NewCalculator();
     this.operations = function (term1, term2, operation) {
