@@ -1,42 +1,74 @@
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
+// class Book {
+//   title: string;
+//   author: string;
+//   isBan: string;
+//   constructor(title: string, author: string, isBan: string) {
+//     this.title = title;
+//     this.author = author;
+//     this.isBan = isBan;
+//   }
+// }
+// const books = new Map();
+// function createBook(title: string, author: string, isBan: string) {
+//   const existBook = books.has(isBan);
+//   if (existBook) {
+//     return books.get(isBan);
+//   }
+//   const book = new Book(title, author, isBan);
+//   books.set(isBan, book);
+//   return book;
+// }
+// const booksList: Book[] = [];
+// function addBook(
+//   title: string,
+//   author: string,
+//   isBan: string,
+//   availability: boolean,
+//   sale: number
+// ) {
+//   const book = {
+//     ...createBook(title, author, isBan),
+//     availability,
+//     sale,
+//   };
+//   booksList.push(book);
+//   return book;
+// }
+// addBook('Never Give Up', 'Mohamed Brzan', 'AB123', true, 100);
+// addBook('Never Give Up', 'Mohamed Brzan', 'AB123', true, 100);
+// addBook('Never Give Up', 'Mohamed Brzan', 'AB123', true, 100);
+// addBook('Never Give Up', 'Mohamed Brzan', 'AB123', true, 100);
+// addBook('Never Give Up', 'Mohamed Brzan', 'AB123', true, 100);
+// addBook('Data Analysis','Ali Fouad','BD123',false,4)
+// console.log(booksList);
+var Flyweight = /** @class */ (function () {
+    function Flyweight(sharedState) {
+        this.sharedState = sharedState;
+    }
+    Flyweight.prototype.operation = function (uniqueState) {
+        console.log("Flyweight: sharedState (".concat(this.sharedState, ") and uniqueState (").concat(uniqueState, ")"));
     };
-    return __assign.apply(this, arguments);
-};
-var Book = /** @class */ (function () {
-    function Book(title, author, isBan) {
-        this.title = title;
-        this.author = author;
-        this.isBan = isBan;
-    }
-    return Book;
+    return Flyweight;
 }());
-var books = new Map();
-function createBook(title, author, isBan) {
-    var existBook = books.has(isBan);
-    if (existBook) {
-        return books.get(isBan);
+var FlyweightFactory = /** @class */ (function () {
+    function FlyweightFactory() {
+        this.flyweights = {};
     }
-    var book = new Book(title, author, isBan);
-    books.set(isBan, book);
-    return book;
-}
-var booksList = [];
-function addBook(title, author, isBan, availability, sale) {
-    var book = __assign(__assign({}, createBook(title, author, isBan)), { availability: availability, sale: sale });
-    booksList.push(book);
-    return book;
-}
-addBook('Never Give Up', 'Mohamed Brzan', 'AB123', true, 100);
-addBook('Never Give Up', 'Mohamed Brzan', 'AB123', true, 100);
-addBook('Never Give Up', 'Mohamed Brzan', 'AB123', true, 100);
-addBook('Never Give Up', 'Mohamed Brzan', 'AB123', true, 100);
-addBook('Never Give Up', 'Mohamed Brzan', 'AB123', true, 100);
-addBook('Data Analysis', 'Ali Fouad', 'BD123', false, 4);
-console.log(booksList);
+    FlyweightFactory.prototype.getFlyweight = function (sharedState) {
+        if (!this.flyweights[sharedState]) {
+            this.flyweights[sharedState] = new Flyweight(sharedState);
+        }
+        return this.flyweights[sharedState];
+    };
+    FlyweightFactory.prototype.getFlyweightCount = function () {
+        return Object.keys(this.flyweights).length;
+    };
+    return FlyweightFactory;
+}());
+var factory = new FlyweightFactory();
+var flyweight1 = factory.getFlyweight('sharedState 1');
+var flyweight10 = factory.getFlyweight('sharedState 10');
+flyweight1.operation('uniqueState 1');
+flyweight10.operation('uniqueState 10');
+console.log(flyweight1);
+console.log(factory.getFlyweightCount());

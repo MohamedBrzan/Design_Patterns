@@ -51,3 +51,44 @@
 // addBook('Data Analysis','Ali Fouad','BD123',false,4)
 
 // console.log(booksList);
+
+class Flyweight {
+  sharedState: string;
+  constructor(sharedState: string) {
+    this.sharedState = sharedState;
+  }
+
+  operation(uniqueState: string) {
+    console.log(
+      `Flyweight: sharedState (${this.sharedState}) and uniqueState (${uniqueState})`
+    );
+  }
+}
+
+class FlyweightFactory {
+  flyweights: {};
+  constructor() {
+    this.flyweights = {};
+  }
+
+  getFlyweight(sharedState: string) {
+    if (!this.flyweights[sharedState]) {
+      this.flyweights[sharedState] = new Flyweight(sharedState);
+    }
+    return this.flyweights[sharedState];
+  }
+
+  getFlyweightCount(): number {
+    return Object.keys(this.flyweights).length;
+  }
+}
+
+const factory = new FlyweightFactory();
+const flyweight1 = factory.getFlyweight('sharedState 1');
+const flyweight10 = factory.getFlyweight('sharedState 10');
+flyweight1.operation('uniqueState 1');
+flyweight10.operation('uniqueState 10');
+
+
+console.log(flyweight1);
+console.log(factory.getFlyweightCount());
